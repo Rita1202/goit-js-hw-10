@@ -17,23 +17,19 @@ refs.inputEl.addEventListener('input', debounce(onInputHandler, 500));
 function onInputHandler(event) {
   refs.listEl.innerHTML = '';
   name = event.target.value.trim();
+  if (name.length < 1) return;
 
   fetchCountries(name)
     .then(countries => {
-      if (countries === undefined) {
-        throw new Error(error);
-      }
       if (countries.length > 10) {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
         return;
-      }
-      if ((countries.length < 10) & (countries.length > 2)) {
+      } else if ((countries.length < 10) & (countries.length > 2)) {
         renderMarkupList(countries);
         return;
-      }
-      if (countries.length === 1) {
+      } else if (countries.length === 1) {
         renderMarkupUnique(countries);
         return;
       }
